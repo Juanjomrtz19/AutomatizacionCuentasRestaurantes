@@ -1,0 +1,5 @@
+bg-green-500
+bg-yellow-500
+bg-orange-600
+bg-gray-100
+bg-blue-500
