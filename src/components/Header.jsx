@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import HeaderFix from "./headerFix";
+import HeaderFix from "./HeaderFix";
 
 const Header = () => {
 
