@@ -1,4 +1,4 @@
-import Header from "../components/header";
+import Header from "../components/Header";
 import IconoLanding from "../components/IconoLanding";
 import Eficiencia from "../assets/iconos/eficiencia-removebg-preview.png"
 import Rapidez from "../assets/iconos/cronometro-removebg-preview.png"
