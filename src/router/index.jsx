@@ -3,16 +3,33 @@ import { useRouteError } from "react-router-dom";
 import Home from "../pages/Home";
 import About from "../pages/About"
 import NotFound from "../pages/NotFound";
+import LayoutPublic from "../layout/LayoutPublic";
+import LogIn from "../pages/LogIn";
+import Register from "../pages/Register";
 
 export const router = createBrowserRouter([
     {
-        path: '/',
+        path:"/",
         element: <Home/>,
         errorElement: <NotFound />,
     },
     {
-        path: "/about",
-        element: <About />,
+        path: '/',
+        element: <LayoutPublic/>,
         errorElement: <NotFound />,
+        children: [
+            {
+                path: "/about",
+                element: <About />,
+            },
+            {
+                path: "/login",
+                element: <LogIn/>
+            },
+            {
+                path: "/register",
+                element: <Register/>
+            }
+        ]
     },
 ]);

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Bars from "./Bars"
+import { Link } from "react-router-dom";
 
 const HeaderFix = () => {
     const headerRef = useRef(null);
@@ -16,7 +17,7 @@ const HeaderFix = () => {
         <header ref={headerRef} className="fixed  top-0 w-full p-5 bg-[url('./assets/fondoHeaderFix2.jpg')] bg-cover bg-center">
             <section className="flex justify-between">
                 <Bars color={'text-gray-100'} height={headerHeight}/>
-                <i class="fa-solid fa-user text-gray-100"></i>
+                <Link to="/login"><i className="fa-solid fa-user text-gray-100"></i></Link>
             </section>
         </header>
         </>

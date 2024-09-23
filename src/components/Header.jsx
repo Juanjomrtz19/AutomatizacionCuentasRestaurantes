@@ -16,7 +16,6 @@ useEffect(() => {
     };
   }, []);
 
-console.log(scrollPosition);
 
 return(
     <>

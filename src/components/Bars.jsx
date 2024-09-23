@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Bars = ({color, height}) => {
     const [style, setStyle] = useState({
@@ -24,8 +25,8 @@ const Bars = ({color, height}) => {
             <div className={`fixed left-0 w-full ${style.styleNav} bg-black transition-all duration-200 overflow-hidden`} style={{ top: `${height}px` }}>
                 <nav className='flex w-full h-full p-4 text-white'>
                     <ul>
-                        <li className='pb-4 text-2xl'>HOME</li>
-                        <li className='text-2xl'>ABOUT</li>
+                        <li className='pb-4 text-2xl'><Link to="/">HOME</Link></li>
+                        <li className='text-2xl'><Link to="/about">ABOUT</Link></li>
                     </ul>
                 </nav>
             </div>
