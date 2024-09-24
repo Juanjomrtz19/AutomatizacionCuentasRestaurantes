@@ -2,6 +2,7 @@ import { useState } from "react";
 import MsgError from "../components/MsgError";
 import Button from "../components/Button";
 import { Link } from "react-router-dom";
+import Logo from "../components/Logo";
 
 const LogIn = () => {
     
@@ -38,7 +39,8 @@ const LogIn = () => {
 
     return(
         <>
-        <section className="h-screen w-full flex flex-col justify-center items-center bg-gray-300">
+        <Logo/>
+        <section className="w-full flex flex-col justify-center items-center bg-gray-300">
         <form className=" flex flex-col w-3/4" onSubmit={handleSubmit}>
             <label className="font-bold">Email: </label>
             <input className="mb-4" name="email" value={loginFields.email} onChange={addField} type="text" />
@@ -52,8 +54,8 @@ const LogIn = () => {
                 <Button msg={'Enviar'} />
             </div>
         </form>
-        <section>
-            <Link to='/register'><p>Si no esta registrado, clickeé aquí</p></Link>
+        <section className="p-4">
+            <Link to='/register'><p className="pt-5">Si no esta registrado, clickeé aquí</p></Link>
         </section>
         </section>
         </>
