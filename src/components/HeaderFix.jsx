@@ -14,7 +14,7 @@ const HeaderFix = () => {
 
     return(
         <>
-        <header ref={headerRef} className="fixed  top-0 w-full p-5 bg-[url('./assets/fondoHeaderFix2.jpg')] bg-cover bg-center">
+        <header ref={headerRef} className="fixed z-50 top-0 w-full p-5 bg-[url('./assets/fondoHeaderFix2.jpg')] bg-cover bg-center">
             <section className="flex justify-between">
                 <Bars color={'text-gray-100'} height={headerHeight}/>
                 <Link to="/login"><i className="fa-solid fa-user text-gray-100"></i></Link>
