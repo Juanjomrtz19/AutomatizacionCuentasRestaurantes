@@ -1,10 +1,17 @@
+import {useLoaderData} from 'react-router-dom'
 
 const About = () => {
+
+    const {user} = useLoaderData();
+
+    console.log(user);
+
     return (
         <>
-            <p>Hola mi amor</p>
+        <p>ABOUT</p>
         </>
     );
 }
 
 export default About;
+

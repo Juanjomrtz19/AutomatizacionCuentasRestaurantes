@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import { useRouteError } from "react-router-dom";
 import Home from "../pages/Home";
-import About from "../pages/About"
+import About, { loaderUser } from "../pages/About"
 import NotFound from "../pages/NotFound";
 import LayoutPublic from "../layout/LayoutPublic";
 import LogIn from "../pages/LogIn";
@@ -20,7 +20,7 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: "/about",
-                element: <About />,
+                element: <About />
             },
             {
                 path: "/login",
