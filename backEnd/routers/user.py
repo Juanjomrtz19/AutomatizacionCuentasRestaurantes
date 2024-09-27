@@ -1,5 +1,8 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
+import DB.operationsDB as sentences
+from DB.database import get_db_connection
+from mysql.connector import Error
 
 router = APIRouter()
 
@@ -10,8 +13,21 @@ class User(BaseModel):
     password: str
     path_menu: str
 
-users_list = [User(restaurant_name='El ortega', email='ortega@contacto.com', address='Macael', password='1234', path_menu='/')]
+@router.post('/register')
+async def register(user: User, db = Depends(get_db_connection)):
+    try:
+        cursor = db.cursor()
+        list_data = ['restaurant_name', 'email', 'restaurant_address', 'password', 'url_restaurant_menu']
+        sql = sentences.insertCD('user', list_data)
+        values = (user.restaurant_name, user.email, user.address, user.password, user.path_menu)
 
-@router.get('/user')
-async def root():
-    return users_list[0];
+        cursor.execute(sql, values)
+        db.commit()
+        
+        return{"message": "User registered succesfully"}
+    
+    except Error as e:
+        raise HTTPException(status_code=500, detail=f"Failed to insert user: {str(e)}")
+    
+    finally:
+        cursor.close()
