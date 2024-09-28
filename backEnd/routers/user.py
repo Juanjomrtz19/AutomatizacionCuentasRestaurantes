@@ -24,7 +24,7 @@ async def register(user: User, db = Depends(get_db_connection)):
         cursor.execute(sql, values)
         db.commit()
         
-        return{"message": "User registered succesfully"}
+        return{"message": "Usuario registrado exitósamente"}
     
     except Error as e:
         raise HTTPException(status_code=500, detail=f"Failed to insert user: {str(e)}")
