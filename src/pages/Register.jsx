@@ -1,44 +1,117 @@
 import Logo from "../components/Logo";
 import Button from "../components/Button";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import MsgError from "../components/MsgError";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+    
+    const navigate = useNavigate();
+
+    const initialState = {
+        restaurant_name: '',
+        email:'',
+        address: '',
+        password: '',
+        path_menu: ''
+    };
+
+    const onSubmit = async (values) => {
+
+        try{
+            const response = await fetch('http://127.0.0.1:8000/register',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(values)
+            });
+
+            const data = await response.json();
+            console.log(data);
+
+            if (!response.ok) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Algo ha ido mal en el registro",
+                    footer: '<a href="#">Why do I have this issue?</a>'
+                });  
+            } else{
+
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Se ha registrado exitosamente",
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
+        
+                navigate("/login");
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: error,
+                footer: '<a href="#">Why do I have this issue?</a>'
+            });  
+        }
+    }
+
+    const validationSchema = Yup.object().shape({
+        email: Yup.string().email("Email no válido").required("Email requerido"),
+        password: Yup.string().trim().min(8).required("Contraseña no puede estar en blanco"),
+        restaurant_name: Yup.string().trim().required("El nombre del restaurante no puede estar vacio"),
+        address: Yup.string().trim().required("La dirección no puede estar en blanco")
+    })
+
     return(
         <>
-            <Logo/>
+            <Logo/> 
             
             <section className="w-full flex flex-col justify-center items-center bg-gray-300">
-                <form action="" className="grid grid-cols-1 lg:grid-cols-2 gap-10 p-4">
-                    <section className="flex flex-col lg:flex-row gap-2 font-bold">
-                    <label className="pr-4">Nombre restaurante: </label>
-                    <input type="text"/>
-                    </section>
-                    
-                    <section className="flex flex-col lg:flex-row gap-2 font-bold">
-                    <label className="pr-4">Correo dirigente del restaurante: </label>
-                    <input type="text"/>
-                    </section>
+                <Formik onSubmit={onSubmit} initialValues={initialState} validationSchema={validationSchema}>
+                    {({ values, handleChange, handleSubmit, errors, touched, handleBlur}) => (
+                    <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-2 gap-10 p-4">
+                        <section className="flex flex-col lg:flex-row gap-2 font-bold">
+                        <label className="pr-4">Nombre restaurante: </label>
+                        <input type="text" value={values.restaurant_name} onChange={handleChange} name="restaurant_name" onBlur={handleBlur}/>
+                        {errors.restaurant_name && touched.restaurant_name && (<MsgError msg={errors.restaurant_name}/>)}
+                        </section>
+                        
+                        <section className="flex flex-col lg:flex-row gap-2 font-bold">
+                        <label className="pr-4">Correo dirigente del restaurante: </label>
+                        <input type="text" value={values.email} onChange={handleChange} name="email" onBlur={handleBlur}/>
+                        {errors.email && touched.email && (<MsgError msg={errors.email}/>)}
+                        </section>
 
-                    <section className="flex flex-col lg:flex-row gap-2 font-bold lg:col-span-2">
-                    <label className="pr-4">Dirección física completa del establecimiento: </label>
-                    <textarea name="" id="" className="w-full"></textarea>
-                    </section>
+                        <section className="flex flex-col lg:flex-row gap-2 font-bold lg:col-span-2">
+                        <label className="pr-4">Dirección física completa del establecimiento: </label>
+                        <textarea id="" className="w-full" value={values.address} onChange={handleChange} name="address" onBlur={handleBlur}></textarea>
+                        {errors.address && touched.address && (<MsgError msg={errors.address}/>)}
+                        </section>
 
-                    <section className="flex flex-col lg:flex-row gap-2 font-bold">
-                        <label className="pr-4">Contraseña:</label>
-                        <input type="password" />
-                    </section>
+                        <section className="flex flex-col lg:flex-row gap-2 font-bold">
+                            <label className="pr-4">Contraseña:</label>
+                            <input type="password" value={values.password} onChange={handleChange} name="password" onBlur={handleBlur}/>
+                            {errors.password && touched.password && (<MsgError msg={errors.password}/>)}
+                        </section>
 
-                    <section className="flex flex-col lg:flex-row gap-2 font-bold">
-                        <label className="pr-4">Carta del restaurante:</label>
-                        <input type="file" />
-                    </section>
+                        <section className="flex flex-col lg:flex-row gap-2 font-bold">
+                            <label className="pr-4">Carta del restaurante:</label>
+                            <input type="text" value={values.path_menu} onChange={handleChange} name="path_menu"/>
+                        </section>
 
-                    <section className="w-full flex justify-center items-center">
-                        <Button msg={'Enviar'} />
-                    </section>
-                    
-                </form>
-
+                        <section className="w-full flex justify-center items-center">
+                            <Button msg={'Enviar'} />
+                        </section>
+                        
+                    </form>)
+                    }
+                </Formik>
             </section>
         </>
     )

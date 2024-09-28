@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import Bars from "./Bars"
 import { Link } from "react-router-dom";
+import { useUserContext } from "../context/UserContext";
 
 const HeaderFix = () => {
     const headerRef = useRef(null);
     const [headerHeight, setHeaderHeight] = useState(0)
-    
+    const { user } = useUserContext()
+
+
     useEffect(() => {
         if(headerRef.current){
             setHeaderHeight(headerRef.current.clientHeight);
@@ -17,7 +20,7 @@ const HeaderFix = () => {
         <header ref={headerRef} className="fixed z-50 top-0 w-full p-5 bg-[url('./assets/fondoHeaderFix2.jpg')] bg-cover bg-center">
             <section className="flex justify-between">
                 <Bars color={'text-gray-100'} height={headerHeight}/>
-                <Link to="/login"><i className="fa-solid fa-user text-gray-100"></i></Link>
+                {!user && (<Link to="/login"><i className="fa-solid fa-user text-gray-100"></i></Link>)}
             </section>
         </header>
         </>

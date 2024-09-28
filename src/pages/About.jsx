@@ -1,10 +1,12 @@
 
 const About = () => {
+
     return (
         <>
-            <p>Hola mi amor</p>
+        <p>ABOUT</p>
         </>
     );
 }
 
 export default About;
+
