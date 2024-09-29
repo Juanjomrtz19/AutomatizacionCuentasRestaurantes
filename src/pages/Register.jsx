@@ -21,7 +21,7 @@ const Register = () => {
     const onSubmit = async (values) => {
 
         try{
-            const response = await fetch('http://127.0.0.1:8000/register',{
+            const response = await fetch('http://192.168.1.133:8000/register',{
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -44,7 +44,7 @@ const Register = () => {
                 Swal.fire({
                     position: "center",
                     icon: "success",
-                    title: "Se ha registrado exitosamente",
+                    title: data.message,
                     showConfirmButton: false,
                     timer: 1500
                   });
@@ -52,12 +52,23 @@ const Register = () => {
                 navigate("/login");
             }
         } catch (error) {
+            let errorMessage = '';
+        
+            // Revisar si es un problema de red o un error de respuesta
+            if (error instanceof TypeError && error.message === 'Failed to fetch') {
+                errorMessage = 'No se pudo conectar con el servidor. Verifica tu conexión a Internet o si el servidor está activo.';
+            } else {
+                errorMessage = error.message || 'Ocurrió un error desconocido. Intenta nuevamente o contacta al soporte.';
+            }
+        
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: error,
-                footer: '<a href="#">Why do I have this issue?</a>'
-            });  
+                text: errorMessage,
+                footer: '<a href="#">¿Por qué tengo este problema?</a>'
+            });
+            
+            console.error("Detalle del error:", error);  // Imprime más detalles en la consola
         }
     }
 
