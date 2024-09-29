@@ -46,5 +46,7 @@ async def login(form: OAuth2PasswordRequestForm = Depends(get_db_connection)):
         raise HTTPException(status_code=404, detail="El usuario no es correcto")
 
 @router.get('/prueba')
-async def prueba():
-    return {"message": "hola"}
+async def prueba(db = Depends(get_db_connection)):
+    cursor = db.cursor()
+    datos = sentences.getElementFromTable('user', 'email', 'elOrtega@gmail.com', cursor)
+    return User(restaurant_name=datos[0][0], email=datos[0][1], address=datos[0][2], password=datos[0][3], path_menu=datos[0][4])

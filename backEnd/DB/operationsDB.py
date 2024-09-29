@@ -1,5 +1,5 @@
 from passlib.context import CryptContext
-import DB.operationsDB as sentences
+from DB.database import get_db_connection
 
 #CD means comandadirecta, it's the database name where this code works in.
 #ESTE FICHERO esta creado para automatizar la creacion de sentencias SQL que se van a utilizar en la API
@@ -30,13 +30,11 @@ def checkUserIsRegisted(cursor, email):
         return False
 
 def getElementFromTable(table, column_name, value, cursor):
-    sql = 'SELECT * FROM ' + table + ' WHERE ' + column_name + "=%s"
+    sql = f'SELECT * FROM {table} WHERE {column_name} = %s'
     cursor.execute(sql, (value,))
     result = cursor.fetchall()
     return result
 
-
-#print(getElementFromTable('user', 'restaurant_name'))
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 def encrypt_password(password: str):

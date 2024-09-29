@@ -21,7 +21,7 @@ const Register = () => {
     const onSubmit = async (values) => {
 
         try{
-            const response = await fetch('http://192.168.1.133:8000/register',{
+            const response = await fetch('https://eabc-213-194-154-122.ngrok-free.app:8000/register',{
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
