@@ -3,6 +3,7 @@ from pydantic import BaseModel
 import DB.operationsDB as sentences
 from DB.database import get_db_connection
 from mysql.connector import Error
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 router = APIRouter()
 
@@ -15,11 +16,16 @@ class User(BaseModel):
 
 @router.post('/register')
 async def register(user: User, db = Depends(get_db_connection)):
+    
     try:
         cursor = db.cursor()
+
+        if sentences.checkUserIsRegisted(cursor, user.email):
+            return {"message": "El usuario ya estaba registrado"}
+        
         list_data = ['restaurant_name', 'email', 'restaurant_address', 'password', 'url_restaurant_menu']
         sql = sentences.insertCD('user', list_data)
-        values = (user.restaurant_name, user.email, user.address, user.password, user.path_menu)
+        values = (user.restaurant_name, user.email, user.address, sentences.encrypt_password(user.password), user.path_menu)
 
         cursor.execute(sql, values)
         db.commit()
@@ -31,3 +37,14 @@ async def register(user: User, db = Depends(get_db_connection)):
     
     finally:
         cursor.close()
+
+@router.post("/login")
+async def login(form: OAuth2PasswordRequestForm = Depends(get_db_connection)):
+    exists_user = sentences.checkUserIsRegisted(form.username)
+    
+    if not exists_user:
+        raise HTTPException(status_code=404, detail="El usuario no es correcto")
+
+@router.get('/prueba')
+async def prueba():
+    return {"message": "hola"}
